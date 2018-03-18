@@ -1,3 +1,5 @@
+# Author: (c) Sudhanva Naryana
+
 from urllib.parse import urlparse
 import urllib.request
 from threading import Thread
