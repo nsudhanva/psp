@@ -176,7 +176,7 @@ for fragment in range(3, 42):
     final_seq_df['Metadata'] = pd.Series(['102l', resolution])
 
     # Printing the head of final DataFrame
-    print(final_seq_df.head())
+    # print(final_seq_df.head())
 
     # Creating the excel with Sheets 
     final_seq_df.to_excel(writer, sheet_name='fragment' + str(fragment))
