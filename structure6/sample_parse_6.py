@@ -5,6 +5,7 @@
 import xml.etree.ElementTree as ET
 import pandas as pd
 import csv   
+from collections import Counter
 
 # File tree
 tree = ET.parse('1hq3.xml')
@@ -123,7 +124,7 @@ for fragment in range(3, 42):
     start = int(auth_seq_list[0])
     count = 0
 
-    print(start)
+    # print(start)
     # Sequence length
     seq = fragment
 
@@ -180,14 +181,25 @@ for fragment in range(3, 42):
         final_cartn_z_list.append(temp_auth_z)
         final_auth_atom_id_list.append(temp_auth)
 
+    type_list = []
+    type_list_occurances = []
+
     # Creating final sequence
     for i in range(0, len(auth_temp_list)):
         seq_list.append(''.join(auth_temp_list[i:i + fragment]))
+        type_list.append(auth_temp_list[i:i + fragment])
 
     # Creating start and end list
     for i in range(start - 1, len(auth_temp_list) + (start - 1)):
         start_list.append(i + 1)
         end_list.append(i + fragment) 
+
+    for i in type_list:
+        type_list_occurances.append(dict(Counter(i)))
+
+    # print(auth_temp_list)
+    # print(type_list)
+    # print(type_list_occurances)
 
     # Appending all lists to DataFrame by converting them to Series
     final_seq_df['Fragments'] = pd.Series(seq_list)
@@ -197,6 +209,7 @@ for fragment in range(3, 42):
     final_seq_df['X'] = pd.Series(final_cartn_x_list)
     final_seq_df['Y'] = pd.Series(final_cartn_y_list)
     final_seq_df['Z'] = pd.Series(final_cartn_z_list)
+    final_seq_df['Type'] = pd.Series(type_list_occurances)
     final_seq_df['Metadata'] = pd.Series(['1hq3', resolution])
 
     # Printing the head of final DataFrame
@@ -204,6 +217,6 @@ for fragment in range(3, 42):
 
     # Creating the excel with Sheets 
     final_seq_df.to_excel(writer, sheet_name='fragment' + str(fragment))
-
+    # break
 # Saving the writer
 writer.save()
