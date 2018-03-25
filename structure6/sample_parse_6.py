@@ -106,7 +106,7 @@ for fragment in range(3, 42):
     auth_asym_id_list = list(auth_asym_id[:group_pdb_list_length])
     auth_asym_id = list(auth_asym_id[:group_pdb_list_length])
 
-
+    print(auth_asym_id)
     # Check for unique elements
     unique_asym_id = unique_list(auth_asym_id_list)
     # print(unique_asym_id)
@@ -217,6 +217,6 @@ for fragment in range(3, 42):
 
     # Creating the excel with Sheets 
     final_seq_df.to_excel(writer, sheet_name='fragment' + str(fragment))
-    # break
+    break
 # Saving the writer
 writer.save()
