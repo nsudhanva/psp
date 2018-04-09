@@ -68,7 +68,7 @@ for child in root:
 writer = []
 main_index = 0
 
-for chain in chains_list:
+for chain, ci in zip(chains_list, chain_occurances):
     writer.append(pd.ExcelWriter('1hq3_' + chain + '.xlsx', engine='xlsxwriter'))
 
     # For fragment in 3 to 41 fragments
@@ -110,6 +110,26 @@ for chain in chains_list:
         cartn_z_list = list(cartn_z[:group_pdb_list_length])
         auth_asym_id_list = list(auth_asym_id[:group_pdb_list_length])
         auth_asym_id = list(auth_asym_id[:group_pdb_list_length])
+        
+        chain_seq_start = 0
+        tempo_auth_seq_list = auth_seq_list
+        tempo_auth_comp_list = auth_comp_list
+        tempo_auth_atom_id_list = auth_atom_id_list
+        tempo_cartn_x_list = cartn_x_list
+        tempo_cartn_y_list = cartn_y_list
+        tempo_cartn_z_list = cartn_z_list
+        tempo_auth_asym_id_list = auth_asym_id_list
+        tempo_auth_asym_id = auth_asym_id
+
+        auth_seq_list = tempo_auth_seq_list[chain_seq_start:ci]
+        auth_comp_list = tempo_auth_comp_list[chain_seq_start:ci]
+        auth_atom_id_list = tempo_auth_atom_id_list[chain_seq_start:ci]
+        cartn_x_list = tempo_cartn_x_list[chain_seq_start:ci]
+        cartn_y_list = tempo_cartn_y_list[chain_seq_start:ci]
+        cartn_z_list = tempo_cartn_z_list[chain_seq_start:ci]
+        auth_asym_id_list = tempo_auth_asym_id_list[chain_seq_start:ci]
+        auth_asym_id = tempo_auth_asym_id[chain_seq_start:ci]
+
 
         # print(auth_asym_id)
         # Check for unique elements
@@ -118,12 +138,12 @@ for chain in chains_list:
 
         # Final Series Lists
         seq_list = []
-        start_list = []
         end_list = []
         final_cartn_x_list = []
         final_cartn_y_list = []
         final_cartn_z_list = []
         final_auth_atom_id_list = []
+        start_list = []
 
         # Starting Fragment
         start = int(auth_seq_list[0])
@@ -218,11 +238,14 @@ for chain in chains_list:
 
         # Printing the head of final DataFrame
         # print(final_seq_df.head())
-
+        n = fragment - 1
+        final_seq_df = final_seq_df[:-n]
         # Creating the excel with Sheets 
         final_seq_df.to_excel(writer[main_index], sheet_name='fragment' + str(fragment))
+        chain_seq_start = ci
+        final_seq_df.drop(final_seq_df.index, inplace=True)
         # break
     # Saving the writer
     writer[main_index].save()
     main_index = main_index + 1
-    break
+    # break
