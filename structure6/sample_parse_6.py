@@ -8,7 +8,7 @@ import csv
 from collections import Counter
 
 # File tree
-tree = ET.parse('1hq3.xml')
+tree = ET.parse('102l.xml')
 
 # Root contains parsed, encoded XML 
 root = tree.getroot()
@@ -106,7 +106,7 @@ for fragment in range(3, 42):
     auth_asym_id_list = list(auth_asym_id[:group_pdb_list_length])
     auth_asym_id = list(auth_asym_id[:group_pdb_list_length])
 
-    print(auth_asym_id)
+    # print(auth_asym_id)
     # Check for unique elements
     unique_asym_id = unique_list(auth_asym_id_list)
     # print(unique_asym_id)
@@ -210,13 +210,13 @@ for fragment in range(3, 42):
     final_seq_df['Y'] = pd.Series(final_cartn_y_list)
     final_seq_df['Z'] = pd.Series(final_cartn_z_list)
     final_seq_df['Type'] = pd.Series(type_list_occurances)
-    final_seq_df['Metadata'] = pd.Series(['1hq3', resolution])
+    final_seq_df['Metadata'] = pd.Series(['102l', resolution])
 
     # Printing the head of final DataFrame
     # print(final_seq_df.head())
 
     # Creating the excel with Sheets 
     final_seq_df.to_excel(writer, sheet_name='fragment' + str(fragment))
-    break
+    # break
 # Saving the writer
 writer.save()
