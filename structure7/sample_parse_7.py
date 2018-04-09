@@ -5,16 +5,15 @@
 import xml.etree.ElementTree as ET
 import pandas as pd
 import csv   
+from chains import *
 from collections import Counter
 
 # File tree
-tree = ET.parse('102l.xml')
+tree = ET.parse('1hq3.xml')
 
 # Root contains parsed, encoded XML 
 root = tree.getroot()
 
-# Excel Writer
-writer = pd.ExcelWriter('sample6.xlsx', engine='xlsxwriter')
 # Element Dictionary
 elemDict = {}
 
@@ -65,158 +64,165 @@ for child in root:
     break
 
 # print(df_dict)
+# Excel Writer
+writer = []
+main_index = 0
 
-# For fragment in 3 to 41 fragments
-for fragment in range(3, 42):
-    # Original DataFrame
-    df = pd.DataFrame(df_dict['atom_siteCategory']).transpose()
-    # Resolution
-    resolution = elemDict['ls_d_res_high']
+for chain in chains_list:
+    writer.append(pd.ExcelWriter('1hq3_' + chain + '.xlsx', engine='xlsxwriter'))
 
-    df.index.name = 'ids'
-    df.index = df.index.map(int)
-    df.sort_index()
+    # For fragment in 3 to 41 fragments
+    for fragment in range(3, 42):
+        # Original DataFrame
+        df = pd.DataFrame(df_dict['atom_siteCategory']).transpose()
+        # Resolution
+        resolution = elemDict['ls_d_res_high']
 
-    # Sequence, Composition and Atoms
-    auth_seq_df = df.iloc[:, 7]
-    auth_comp_df = df.iloc[:, 6]
-    auth_atom_id_df = df.iloc[:, 5]
-    
-    # X, Y, Z values
-    cartn_x = df.iloc[:, 1]
-    cartn_y = df.iloc[:, 2]
-    cartn_z = df.iloc[:, 3]
+        df.index.name = 'ids'
+        df.index = df.index.map(int)
+        df.sort_index()
 
-    # A, B, C...
-    auth_asym_id = df.iloc[:, 4]
-    group_pdb = df.iloc[:, 8]
-    # print(df.head())
+        # Sequence, Composition and Atoms
+        auth_seq_df = df.iloc[:, 7]
+        auth_comp_df = df.iloc[:, 6]
+        auth_atom_id_df = df.iloc[:, 5]
+        
+        # X, Y, Z values
+        cartn_x = df.iloc[:, 1]
+        cartn_y = df.iloc[:, 2]
+        cartn_z = df.iloc[:, 3]
 
-    # Converting DataFrames to List
-    group_pdb_list = list(group_pdb)
-    group_pdb_list = [x for x in group_pdb_list if x == 'ATOM']
-    group_pdb_list_length = len(group_pdb_list)
+        # A, B, C...
+        auth_asym_id = df.iloc[:, 4]
+        group_pdb = df.iloc[:, 8]
+        # print(df.head())
 
-    auth_seq_list = list(auth_seq_df[:group_pdb_list_length])
-    auth_comp_list = list(auth_comp_df[:group_pdb_list_length])
-    auth_atom_id_list = list(auth_atom_id_df[:group_pdb_list_length])
-    cartn_x_list = list(cartn_x[:group_pdb_list_length])
-    cartn_y_list = list(cartn_y[:group_pdb_list_length])
-    cartn_z_list = list(cartn_z[:group_pdb_list_length])
-    auth_asym_id_list = list(auth_asym_id[:group_pdb_list_length])
-    auth_asym_id = list(auth_asym_id[:group_pdb_list_length])
+        # Converting DataFrames to List
+        group_pdb_list = list(group_pdb)
+        group_pdb_list = [x for x in group_pdb_list if x == 'ATOM']
+        group_pdb_list_length = len(group_pdb_list)
 
-    # print(auth_asym_id)
-    # Check for unique elements
-    unique_asym_id = unique_list(auth_asym_id_list)
-    # print(unique_asym_id)
+        auth_seq_list = list(auth_seq_df[:group_pdb_list_length])
+        auth_comp_list = list(auth_comp_df[:group_pdb_list_length])
+        auth_atom_id_list = list(auth_atom_id_df[:group_pdb_list_length])
+        cartn_x_list = list(cartn_x[:group_pdb_list_length])
+        cartn_y_list = list(cartn_y[:group_pdb_list_length])
+        cartn_z_list = list(cartn_z[:group_pdb_list_length])
+        auth_asym_id_list = list(auth_asym_id[:group_pdb_list_length])
+        auth_asym_id = list(auth_asym_id[:group_pdb_list_length])
 
-    # Final Series Lists
-    seq_list = []
-    start_list = []
-    end_list = []
-    final_cartn_x_list = []
-    final_cartn_y_list = []
-    final_cartn_z_list = []
-    final_auth_atom_id_list = []
+        # print(auth_asym_id)
+        # Check for unique elements
+        unique_asym_id = unique_list(auth_asym_id_list)
+        # print(unique_asym_id)
 
-    # Starting Fragment
-    start = int(auth_seq_list[0])
-    count = 0
+        # Final Series Lists
+        seq_list = []
+        start_list = []
+        end_list = []
+        final_cartn_x_list = []
+        final_cartn_y_list = []
+        final_cartn_z_list = []
+        final_auth_atom_id_list = []
 
-    # print(start)
-    # Sequence length
-    seq = fragment
+        # Starting Fragment
+        start = int(auth_seq_list[0])
+        count = 0
 
-    # Occurances of Sequence changes
-    occurances = []
-    atom_ids = []
+        # Sequence length
+        seq = fragment
 
-    # print(auth_seq_list)
+        # Occurances of Sequence changes
+        occurances = []
+        atom_ids = []
 
-    # Creating occurances with Sequence list
-    for i in auth_seq_list:
-        occurances.append(len(auth_seq_list) - 1 - auth_seq_list[::-1].index(i))
+        # print(auth_seq_list)
 
-    occurances = list(set(occurances))
-    occurances.sort()
+        # Creating occurances with Sequence list
+        for i in auth_seq_list:
+            occurances.append(len(auth_seq_list) - 1 - auth_seq_list[::-1].index(i))
 
-    list_index = 0
+        occurances = list(set(occurances))
+        occurances.sort()
 
-    # Final DataFrame
-    final_seq_df = pd.DataFrame()
+        list_index = 0
 
-    auth_temp_list = []
-    j = 0
+        # Final DataFrame
+        final_seq_df = pd.DataFrame()
 
-    # Creating temporary sequence list
-    for i in occurances:
-        auth_temp_list.append(unique_list(auth_comp_list[j:i + 1])[0])
-        j = i + 1
+        auth_temp_list = []
+        j = 0
 
-    # Temporary Lists
-    auth_temp_atom_id_list = []
-    temp_cartn_x_list = []
-    temp_cartn_y_list = []
-    temp_cartn_z_list = []
+        # Creating temporary sequence list
+        for i in occurances:
+            auth_temp_list.append(unique_list(auth_comp_list[j:i + 1])[0])
+            j = i + 1
 
-    # Creating temporary Lists
-    j = 0
-    for i in occurances:
-        auth_temp_atom_id_list.append(auth_atom_id_list[j:i + 1])  
-        temp_cartn_x_list.append(cartn_x_list[j:i+1])
-        temp_cartn_y_list.append(cartn_y_list[j:i+1])
-        temp_cartn_z_list.append(cartn_z_list[j:i+1])
-        j = i + 1
+        # Temporary Lists
+        auth_temp_atom_id_list = []
+        temp_cartn_x_list = []
+        temp_cartn_y_list = []
+        temp_cartn_z_list = []
 
-    # Creating final lists
-    for i in range(0, len(auth_temp_atom_id_list)):
-        # Combining all lists into a single list
-        temp_auth = [item for sublist in auth_temp_atom_id_list[i:i + fragment] for item in sublist] 
-        temp_auth_x = [item for sublist in temp_cartn_x_list[i:i + fragment] for item in sublist] 
-        temp_auth_y = [item for sublist in temp_cartn_y_list[i:i + fragment] for item in sublist] 
-        temp_auth_z = [item for sublist in temp_cartn_z_list[i:i + fragment] for item in sublist] 
-        final_cartn_x_list.append(temp_auth_x)
-        final_cartn_y_list.append(temp_auth_y)
-        final_cartn_z_list.append(temp_auth_z)
-        final_auth_atom_id_list.append(temp_auth)
+        # Creating temporary Lists
+        j = 0
+        for i in occurances:
+            auth_temp_atom_id_list.append(auth_atom_id_list[j:i + 1])  
+            temp_cartn_x_list.append(cartn_x_list[j:i+1])
+            temp_cartn_y_list.append(cartn_y_list[j:i+1])
+            temp_cartn_z_list.append(cartn_z_list[j:i+1])
+            j = i + 1
 
-    type_list = []
-    type_list_occurances = []
+        # Creating final lists
+        for i in range(0, len(auth_temp_atom_id_list)):
+            # Combining all lists into a single list
+            temp_auth = [item for sublist in auth_temp_atom_id_list[i:i + fragment] for item in sublist] 
+            temp_auth_x = [item for sublist in temp_cartn_x_list[i:i + fragment] for item in sublist] 
+            temp_auth_y = [item for sublist in temp_cartn_y_list[i:i + fragment] for item in sublist] 
+            temp_auth_z = [item for sublist in temp_cartn_z_list[i:i + fragment] for item in sublist] 
+            final_cartn_x_list.append(temp_auth_x)
+            final_cartn_y_list.append(temp_auth_y)
+            final_cartn_z_list.append(temp_auth_z)
+            final_auth_atom_id_list.append(temp_auth)
 
-    # Creating final sequence
-    for i in range(0, len(auth_temp_list)):
-        seq_list.append(''.join(auth_temp_list[i:i + fragment]))
-        type_list.append(auth_temp_list[i:i + fragment])
+        type_list = []
+        type_list_occurances = []
 
-    # Creating start and end list
-    for i in range(start - 1, len(auth_temp_list) + (start - 1)):
-        start_list.append(i + 1)
-        end_list.append(i + fragment) 
+        # Creating final sequence
+        for i in range(0, len(auth_temp_list)):
+            seq_list.append(''.join(auth_temp_list[i:i + fragment]))
+            type_list.append(auth_temp_list[i:i + fragment])
 
-    for i in type_list:
-        type_list_occurances.append(dict(Counter(i)))
+        # Creating start and end list
+        for i in range(start - 1, len(auth_temp_list) + (start - 1)):
+            start_list.append(i + 1)
+            end_list.append(i + fragment) 
 
-    # print(auth_temp_list)
-    # print(type_list)
-    # print(type_list_occurances)
+        for i in type_list:
+            type_list_occurances.append(dict(Counter(i)))
 
-    # Appending all lists to DataFrame by converting them to Series
-    final_seq_df['Fragments'] = pd.Series(seq_list)
-    final_seq_df['Start'] = pd.Series(start_list)
-    final_seq_df['End'] = pd.Series(end_list)
-    final_seq_df['Atom IDs'] = pd.Series(final_auth_atom_id_list)
-    final_seq_df['X'] = pd.Series(final_cartn_x_list)
-    final_seq_df['Y'] = pd.Series(final_cartn_y_list)
-    final_seq_df['Z'] = pd.Series(final_cartn_z_list)
-    final_seq_df['Type'] = pd.Series(type_list_occurances)
-    final_seq_df['Metadata'] = pd.Series(['102l', resolution])
+        # print(auth_temp_list)
+        # print(type_list)
+        # print(type_list_occurances)
 
-    # Printing the head of final DataFrame
-    # print(final_seq_df.head())
+        # Appending all lists to DataFrame by converting them to Series
+        final_seq_df['Fragments'] = pd.Series(seq_list)
+        final_seq_df['Start'] = pd.Series(start_list)
+        final_seq_df['End'] = pd.Series(end_list)
+        final_seq_df['Atom IDs'] = pd.Series(final_auth_atom_id_list)
+        final_seq_df['X'] = pd.Series(final_cartn_x_list)
+        final_seq_df['Y'] = pd.Series(final_cartn_y_list)
+        final_seq_df['Z'] = pd.Series(final_cartn_z_list)
+        final_seq_df['Type'] = pd.Series(type_list_occurances)
+        final_seq_df['Metadata'] = pd.Series(['1hq3', resolution])
 
-    # Creating the excel with Sheets 
-    final_seq_df.to_excel(writer, sheet_name='fragment' + str(fragment))
-    # break
-# Saving the writer
-writer.save()
+        # Printing the head of final DataFrame
+        # print(final_seq_df.head())
+
+        # Creating the excel with Sheets 
+        final_seq_df.to_excel(writer[main_index], sheet_name='fragment' + str(fragment))
+        # break
+    # Saving the writer
+    writer[main_index].save()
+    main_index = main_index + 1
+    break
