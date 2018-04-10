@@ -8,68 +8,12 @@ import csv
 from chains import *
 from collections import Counter
 
-# File tree
-tree = ET.parse('1hq3.xml')
-
-# Root contains parsed, encoded XML 
-root = tree.getroot()
-
-# Element Dictionary
-elemDict = {}
-
-for elem in tree.iter():
-    elemDict[elem.tag[42:]] = elem.text 
-
-# Function to create a Unique List (Remove Duplicates)
-def unique_list(strings):
-    new_strings = []
-
-    if len(strings) == 1:
-        new_strings.append(strings[0])
-        return new_strings
-
-    for index, value in enumerate(strings):
-        if index == len(strings) - 1:
-            new_strings.append(value)
-            break
-
-        if strings[index] != strings[index + 1]:
-            new_strings.append(value)
-
-    # Returns a list of unique strings
-    return new_strings
-
-# Dictionary for DataFrame, Grand Child DataFrame, Grand Grand Child DataFrame
-df_dict = {}
-df_g_child_dict = {}
-df_g_child_ids = []
-df_gg_child_dict = {}
-
-# For every child in root
-for child in root:
-    df_g_child_dict = {}
-
-    # For every Grand Child in Child
-    for g_child in child:
-        # Dictionary for Grand Grand Child DataFrame
-        df_gg_child_dict = {}
-
-        # For every Grand Grand Child in Child
-        for gg_child in g_child:        
-            df_gg_child_dict[gg_child.tag[42:]] = gg_child.text
-
-        df_g_child_dict[int(g_child.attrib['id'])] = df_gg_child_dict
-
-    df_dict[child.tag[42:]] =  df_g_child_dict
-    break
-
-# print(df_dict)
 # Excel Writer
 writer = []
 main_index = 0
 
 for chain, ci in zip(chains_list, chain_occurances):
-    writer.append(pd.ExcelWriter('1hq3_' + chain + '.xlsx', engine='xlsxwriter'))
+    writer.append(pd.ExcelWriter('102l_' + chain + '.xlsx', engine='xlsxwriter'))
 
     # For fragment in 3 to 41 fragments
     for fragment in range(3, 42):
