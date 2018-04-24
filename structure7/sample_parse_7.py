@@ -1,4 +1,4 @@
-# Author: (c) Sudhanva Naryana
+# Author: (c) Sudhanva Narayana
 
 # Import Element Tree for XML Parsing, Pandas, CSV
 
@@ -8,7 +8,8 @@ import csv
 from collections import Counter
 
 # File tree
-tree = ET.parse('102l.xml')
+file_name = '1hq3'
+tree = ET.parse(file_name + '.xml')
 
 # Root contains parsed, encoded XML 
 root = tree.getroot()
@@ -123,24 +124,37 @@ if not len(auth_asym_id) == len(set(auth_asym_id)):
     chains_list.sort()
     # print(chains_list)
     chain_occurances = []
+    chain_occurances_start = []
 
     chain_index = 0
 
     for i in auth_seq_list[:-1]:
         if int(auth_seq_list[chain_index]) > int(auth_seq_list[chain_index + 1]):
-            chain_occurances.append(chain_index + 1)
+            chain_occurances.append(chain_index)
+            # print(chain_index)
+        else:
+            chain_occurances_start.append(chain_index)
         chain_index = chain_index + 1
 
     chain_occurances.append(int(chain_index))
+
+    for i, v in enumerate(chain_occurances):
+        chain_occurances[i] = chain_occurances[i] + i
     # print(chain_occurances)
+    chain_occurances_start = [x + 2 for x in chain_occurances]
+    chain_occurances_start.insert(0, 1)
+    chain_occurances_start.pop()
+    print(chain_occurances_start)
+    
 # print(chains_list)
 
 # Excel Writer
 writer = []
 main_index = 0
+temp_start = 0
 
-for chain, ci in zip(chains_list, chain_occurances):
-    writer.append(pd.ExcelWriter('102l_' + chain + '.xlsx', engine='xlsxwriter'))
+for chain, ci, ci_start in zip(chains_list, chain_occurances, chain_occurances_start):
+    writer.append(pd.ExcelWriter(file_name + '_' + chain + '.xlsx', engine='xlsxwriter'))
 
     # For fragment in 3 to 41 fragments
     for fragment in range(3, 42):
@@ -216,8 +230,9 @@ for chain, ci in zip(chains_list, chain_occurances):
         start_list = []
 
         # Starting Fragment
-        start = int(auth_seq_list[0])
+        start = int(auth_seq_list[temp_start])
         count = 0
+        # print(start)
 
         # Sequence length
         seq = fragment
@@ -283,11 +298,15 @@ for chain, ci in zip(chains_list, chain_occurances):
             seq_list.append(''.join(auth_temp_list[i:i + fragment]))
             type_list.append(auth_temp_list[i:i + fragment])
 
+        # print(auth_temp_list)
+
         # Creating start and end list
         for i in range(start - 1, len(auth_temp_list) + (start - 1)):
             start_list.append(i + 1)
+            # print(i + 1)
             end_list.append(i + fragment) 
-
+            # print(i + fragment)
+            
         for i in type_list:
             type_list_occurances.append(dict(Counter(i)))
 
@@ -304,7 +323,7 @@ for chain, ci in zip(chains_list, chain_occurances):
         final_seq_df['Y'] = pd.Series(final_cartn_y_list)
         final_seq_df['Z'] = pd.Series(final_cartn_z_list)
         final_seq_df['Type'] = pd.Series(type_list_occurances)
-        final_seq_df['Metadata'] = pd.Series(['1hq3', resolution])
+        final_seq_df['Metadata'] = pd.Series([file_name, resolution])
 
         # Printing the head of final DataFrame
         # print(final_seq_df.head())
@@ -312,8 +331,14 @@ for chain, ci in zip(chains_list, chain_occurances):
         final_seq_df = final_seq_df[:-n]
         # Creating the excel with Sheets 
         final_seq_df.to_excel(writer[main_index], sheet_name='fragment' + str(fragment))
+        # print(chain_seq_start)
         chain_seq_start = ci
+        # print(ci)
         final_seq_df.drop(final_seq_df.index, inplace=True)
+        
+        # print(start_list[-1])
+        # print(end_list[-1])
+        # start = end_list[-1]
         # break
     # Saving the writer
     writer[main_index].save()
