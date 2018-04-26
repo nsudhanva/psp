@@ -140,12 +140,16 @@ if not len(auth_asym_id) == len(set(auth_asym_id)):
 
     for i, v in enumerate(chain_occurances):
         chain_occurances[i] = chain_occurances[i] + i
-    # chain_occurances = [x + 1 for x in chain_occurances]
-    chain_occurances_start = [x + 2 for x in chain_occurances]
+
+    chain_occurances = [x + 1 for x in chain_occurances]
+    chain_occurances_atoms = [x + 2 for x in chain_occurances]
+    chain_occurances_start = [x + 1 for x in chain_occurances]
     chain_occurances_start.insert(0, 0)
     chain_occurances_start.pop()
-    # print(chain_occurances)
-    # print(chain_occurances_start)
+
+# print(chain_occurances)
+# print(chain_occurances_start)
+# print(chain_occurances_atoms)
     
 # print(chains_list)
 
@@ -207,7 +211,6 @@ for chain, ci, ci_start in zip(chains_list, chain_occurances, chain_occurances_s
         tempo_cartn_z_list = cartn_z_list
         tempo_auth_asym_id_list = auth_asym_id_list
         tempo_auth_asym_id = auth_asym_id
-
         auth_seq_list = tempo_auth_seq_list[chain_seq_start:ci]
         auth_comp_list = tempo_auth_comp_list[chain_seq_start:ci]
         auth_atom_id_list = tempo_auth_atom_id_list[chain_seq_start:ci]
@@ -218,6 +221,7 @@ for chain, ci, ci_start in zip(chains_list, chain_occurances, chain_occurances_s
         # print(cartn_x_list[-3:])
         # print(cartn_y_list[-3:])
         # print(cartn_z_list[-3:])
+
         auth_asym_id_list = tempo_auth_asym_id_list[chain_seq_start:ci]
         auth_asym_id = tempo_auth_asym_id[chain_seq_start:ci]
         
@@ -276,10 +280,12 @@ for chain, ci, ci_start in zip(chains_list, chain_occurances, chain_occurances_s
         temp_cartn_y_list = []
         temp_cartn_z_list = []
 
+        # print(occurances)
         # Creating temporary Lists
         j = 0
         for i in occurances:
-            auth_temp_atom_id_list.append(auth_atom_id_list[j:i + 1])  
+            auth_temp_atom_id_list.append(auth_atom_id_list[j:i + 1])
+            # print(j, i + 1)  
             temp_cartn_x_list.append(cartn_x_list[j:i+1])
             temp_cartn_y_list.append(cartn_y_list[j:i+1])
             temp_cartn_z_list.append(cartn_z_list[j:i+1])
@@ -339,6 +345,8 @@ for chain, ci, ci_start in zip(chains_list, chain_occurances, chain_occurances_s
         # Creating the excel with Sheets 
         final_seq_df.to_excel(writer[main_index], sheet_name='fragment' + str(fragment))
         # print(chain_seq_start)
+        # print(chain_seq_start, ci_start)
+        # print(chain_seq_start, ci)
         # print(ci)
         final_seq_df.drop(final_seq_df.index, inplace=True)
         
