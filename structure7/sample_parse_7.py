@@ -140,10 +140,11 @@ if not len(auth_asym_id) == len(set(auth_asym_id)):
 
     for i, v in enumerate(chain_occurances):
         chain_occurances[i] = chain_occurances[i] + i
-    # print(chain_occurances)
+    # chain_occurances = [x + 1 for x in chain_occurances]
     chain_occurances_start = [x + 2 for x in chain_occurances]
     chain_occurances_start.insert(0, 0)
     chain_occurances_start.pop()
+    # print(chain_occurances)
     # print(chain_occurances_start)
     
 # print(chains_list)
@@ -213,6 +214,10 @@ for chain, ci, ci_start in zip(chains_list, chain_occurances, chain_occurances_s
         cartn_x_list = tempo_cartn_x_list[chain_seq_start:ci]
         cartn_y_list = tempo_cartn_y_list[chain_seq_start:ci]
         cartn_z_list = tempo_cartn_z_list[chain_seq_start:ci]
+        # print(chain_seq_start, ci)
+        # print(cartn_x_list[-3:])
+        # print(cartn_y_list[-3:])
+        # print(cartn_z_list[-3:])
         auth_asym_id_list = tempo_auth_asym_id_list[chain_seq_start:ci]
         auth_asym_id = tempo_auth_asym_id[chain_seq_start:ci]
         
@@ -281,7 +286,7 @@ for chain, ci, ci_start in zip(chains_list, chain_occurances, chain_occurances_s
             j = i + 1
 
         # Creating final lists
-        for i in range(0, len(auth_temp_atom_id_list)):
+        for i in range(0, len(auth_temp_atom_id_list) + 1):
             # Combining all lists into a single list
             temp_auth = [item for sublist in auth_temp_atom_id_list[i:i + fragment] for item in sublist] 
             temp_auth_x = [item for sublist in temp_cartn_x_list[i:i + fragment] for item in sublist] 
