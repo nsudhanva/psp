@@ -142,9 +142,9 @@ if not len(auth_asym_id) == len(set(auth_asym_id)):
         chain_occurances[i] = chain_occurances[i] + i
     # print(chain_occurances)
     chain_occurances_start = [x + 2 for x in chain_occurances]
-    chain_occurances_start.insert(0, 1)
+    chain_occurances_start.insert(0, 0)
     chain_occurances_start.pop()
-    print(chain_occurances_start)
+    # print(chain_occurances_start)
     
 # print(chains_list)
 
@@ -155,7 +155,7 @@ temp_start = 0
 
 for chain, ci, ci_start in zip(chains_list, chain_occurances, chain_occurances_start):
     writer.append(pd.ExcelWriter(file_name + '_' + chain + '.xlsx', engine='xlsxwriter'))
-
+    # print(chain, ci, ci_start)
     # For fragment in 3 to 41 fragments
     for fragment in range(3, 42):
         # Original DataFrame
@@ -196,7 +196,8 @@ for chain, ci, ci_start in zip(chains_list, chain_occurances, chain_occurances_s
         auth_asym_id_list = list(auth_asym_id[:group_pdb_list_length])
         auth_asym_id = list(auth_asym_id[:group_pdb_list_length])
         
-        chain_seq_start = 0
+        chain_seq_start = ci_start
+        # chain_seq_start = 0
         tempo_auth_seq_list = auth_seq_list
         tempo_auth_comp_list = auth_comp_list
         tempo_auth_atom_id_list = auth_atom_id_list
@@ -229,6 +230,7 @@ for chain, ci, ci_start in zip(chains_list, chain_occurances, chain_occurances_s
         final_auth_atom_id_list = []
         start_list = []
 
+        # print(chain_seq_start, ci)
         # Starting Fragment
         start = int(auth_seq_list[temp_start])
         count = 0
@@ -332,7 +334,6 @@ for chain, ci, ci_start in zip(chains_list, chain_occurances, chain_occurances_s
         # Creating the excel with Sheets 
         final_seq_df.to_excel(writer[main_index], sheet_name='fragment' + str(fragment))
         # print(chain_seq_start)
-        chain_seq_start = ci
         # print(ci)
         final_seq_df.drop(final_seq_df.index, inplace=True)
         
