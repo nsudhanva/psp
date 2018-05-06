@@ -29,18 +29,18 @@ for i in range(len(file_names)):
             for seq1 in range(len(pd_df_1['Fragments'])):
                 for seq2 in range(seq1 + 1, len(pd_df_2['Fragments'])):
                     if (pd_df_1['Fragments'][seq1] == pd_df_2['Fragments'][seq2]) and (seq1 != seq2):
-                        test_df = pd.DataFrame({'Fragments_1': [pd_df_1['Fragments'][seq1]], 'Start_1': [pd_df_1['Start'][seq1]], 'End_1': [pd_df_1['End'][seq1]], 'Fragments_2': [pd_df_2['Fragments'][seq2]], 'Start_2': [pd_df_2['Start'][seq2]], 'End_2': [pd_df_2['End'][seq2]], 'Resolution_1': [pd_df_1['Resolution'][0]], 'Resolution_2': [pd_df_2['Resolution'][0]], 'ID_1' : [pd_df_1['ID'][0]], 'ID_2' : [pd_df_2['ID'][0]]})
+                        test_df = pd.DataFrame({'Fragments_1': [pd_df_1['Fragments'][seq1]], 'Start_1': [pd_df_1['Start'][seq1]], 'End_1': [pd_df_1['End'][seq1]], 'Fragments_2': [pd_df_2['Fragments'][seq2]], 'Start_2': [pd_df_2['Start'][seq2]], 'End_2': [pd_df_2['End'][seq2]], 'Resolution_1': [pd_df_1['Resolution'][0]], 'Resolution_2': [pd_df_2['Resolution'][0]], 'ID_1' : [pd_df_1['ID'][0]], 'ID_2' : [pd_df_2['ID'][0]], 'Atoms_1': [pd_df_1['Atom IDs'][seq1]], 'X_1': [pd_df_1['X'][seq1]], 'Y_1': [pd_df_1['Y'][seq1]], 'Z_1': [pd_df_1['Z'][seq1]], 'Atoms_2': [pd_df_2['Atom IDs'][seq2]], 'X_2': [pd_df_2['X'][seq2]], 'Y_2': [pd_df_2['Y'][seq2]], 'Z_2': [pd_df_2['Z'][seq2]]})
                         result_df = pd.concat([result_df, test_df], ignore_index=True)
         else:
             for seq1 in range(len(pd_df_1['Fragments'])):
                 for seq2 in range(0, len(pd_df_2['Fragments'])):
                     if (pd_df_1['Fragments'][seq1] == pd_df_2['Fragments'][seq2]):
-                        test_df = pd.DataFrame({'Fragments_1': [pd_df_1['Fragments'][seq1]], 'Start_1': [pd_df_1['Start'][seq1]], 'End_1': [pd_df_1['End'][seq1]], 'Fragments_2': [pd_df_2['Fragments'][seq2]], 'Start_2': [pd_df_2['Start'][seq2]], 'End_2': [pd_df_2['End'][seq2]], 'Resolution_1': [pd_df_1['Resolution'][0]], 'Resolution_2': [pd_df_2['Resolution'][0]], 'ID_1' : [pd_df_1['ID'][0]], 'ID_2' : [pd_df_2['ID'][0]]})
+                        test_df = pd.DataFrame({'Fragments_1': [pd_df_1['Fragments'][seq1]], 'Start_1': [pd_df_1['Start'][seq1]], 'End_1': [pd_df_1['End'][seq1]], 'Fragments_2': [pd_df_2['Fragments'][seq2]], 'Start_2': [pd_df_2['Start'][seq2]], 'End_2': [pd_df_2['End'][seq2]], 'Resolution_1': [pd_df_1['Resolution'][0]], 'Resolution_2': [pd_df_2['Resolution'][0]], 'ID_1' : [pd_df_1['ID'][0]], 'ID_2' : [pd_df_2['ID'][0]], 'Atoms_1': [pd_df_1['Atom IDs'][seq1]], 'X_1': [pd_df_1['X'][seq1]], 'Y_1': [pd_df_1['Y'][seq1]], 'Z_1': [pd_df_1['Z'][seq1]], 'Atoms_2': [pd_df_2['Atom IDs'][seq2]], 'X_2': [pd_df_2['X'][seq2]], 'Y_2': [pd_df_2['Y'][seq2]], 'Z_2': [pd_df_2['Z'][seq2]]})
                         result_df = pd.concat([result_df, test_df], ignore_index=True)
                         
 #        break
 #    break
                     
-result_df = result_df[['ID_1', 'Fragments_1', 'Start_1', 'End_1', 'Resolution_1', 'ID_2', 'Fragments_2', 'Start_2', 'End_2', 'Resolution_2']]
+result_df = result_df[['ID_1', 'Fragments_1', 'Start_1', 'End_1', 'Atoms_1', 'X_1', 'Y_1', 'Z_1' , 'Resolution_1', 'ID_2', 'Fragments_2', 'Start_2', 'End_2', 'Atoms_2', 'X_2', 'Y_2', 'Z_2', 'Resolution_2']]
 result_df.to_excel(fragment_writer)
 fragment_writer.save()
