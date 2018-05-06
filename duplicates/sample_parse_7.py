@@ -8,7 +8,7 @@ import csv
 from collections import Counter
 
 # File tree
-file_name = '1hq3'
+file_name = '2gfs'
 tree = ET.parse(file_name + '.xml')
 
 # Root contains parsed, encoded XML 
