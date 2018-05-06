@@ -1,5 +1,6 @@
 # Author: (c) Sudhanva Narayana
-
+import Bio.PDB
+import numpy as np
 import pandas as pd
 
 #file_names = ['102l_A', '1hq3_A', '1hq3_B', '1hq3_C', '1hq3_D', '1hq3_E', '1hq3_F', '1hq3_G', '1hq3_H']
