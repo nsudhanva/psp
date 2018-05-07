@@ -1,52 +1,53 @@
 import Bio.PDB
-import math
-import numpy as np
+from Bio.PDB.PDBParser import PDBParser
 import pandas as pd
 
-# 1.74 102l_A ALALYSSER	42	44	
-# atoms_1 = ['N', 'CA', 'C', 'O', 'CB', 'N', 'CA', 'C', 'O', 'CB', 'CG', 'CD', 'CE', 'NZ', 'N', 'CA', 'C', 'O', 'CB', 'OG']
-X_1 = ['36.228', '36.872', '37.431', '37.346', '38.018', '38.089', '38.683', '37.624', '37.780', '39.583', '40.944', '41.700', '43.191', '43.990', '36.501', '35.355', '34.784', '34.574', '34.339', '33.113']	
-X_2 = ['32.839', '33.860', '33.276', '33.960', '34.822', '32.017', '31.395', '30.767', '29.546', '30.310', '30.849', '29.732', '30.257', '29.387', '31.614', '31.134', '32.145', '33.329', '31.047', '32.338']	
-# 1.74	102l_A	ALALYSSER	134	136	
-# atoms_2 = ['N', 'CA', 'C', 'O', 'CB', 'N', 'CA', 'C', 'O', 'CB', 'CG', 'CD', 'CE', 'NZ', 'N', 'CA', 'C', 'O', 'CB', 'OG']	
-Y_1 = ['27.971', '26.701', '26.052', '24.837', '26.854', '26.850', '26.280', '25.781', '24.779', '27.272', '27.265', '28.478', '28.429', '29.087', '26.455', '26.129', '24.766', '23.887', '27.285', '27.025']	
-Y_2 = ['12.681', '13.714', '15.077', '16.072', '13.191', '15.134', '16.432', '17.037', '17.073', '16.220', '15.506', '15.312', '14.888', '13.885', '17.460', '17.955', '18.956', '18.936', '16.771', '16.138']	
+fragment = pd.read_excel('fragment3.xlsx')
+print(fragment.head()) 
 
-Z_1 = ['22.983', '22.726', '23.970', '24.174', '21.743', '24.780', '25.960', '26.942', '27.629', '26.600', '25.975', '26.428', '26.169', '27.218', '26.891', '27.710', '27.289', '28.118', '27.581', '28.211']	
-Z_2 = ['-6.114', '-6.421', '-6.758', '-6.684', '-7.502', '-7.131', '-7.464', '-6.240', '-6.063', '-8.482', '-9.695', '-10.698', '-12.053', '-12.677', '-5.344', '-4.098', '-3.574', '-3.926', '-3.114', '-2.989']	
+parser = PDBParser()
+structure = parser.get_structure("test", "102l.pdb")
+atoms = structure.get_atoms()
+residues_1 = structure.get_residues()
+residues_2 = structure.get_residues()
 
-X_1 = [float(i) for i in X_1]
-X_1 = np.array(X_1) 
-X_2 = [float(i) for i in X_2]
-X_2 = np.array(X_2)
-# X_1 = (X_1 ** 2).mean()
-# X_2 = (X_2 ** 2).mean()
-# X = math.sqrt(((X_1 - X_2) ** 2).mean())
-X = ((X_1 - X_2) ** 2)
+# print(list(residues_1))
+# print(list(residues_2))
+# for i in residues:
+    # print(list(i))
+    # print(i.get_resname(), i.get_full_id()[3][1])
+    # print(i.get_segid())
+    # break
 
-Y_1 = [float(i) for i in Y_1]
-Y_1 = np.array(Y_1)
-Y_2 = [float(i) for i in Y_2]
-Y_2 = np.array(Y_2)
-# Y_1 = (Y_1 ** 2).mean()
-# Y_2 = (Y_2 ** 2).mean()
-# Y = math.sqrt(((Y_1 - Y_2) ** 2).mean())
-Y = ((Y_1 - Y_2) ** 2)
+temp_1 = list(residues_1)[42:45]
+temp_2 = list(residues_2)[134:137]
 
-Z_1 = [float(i) for i in Z_1]
-Z_1 = np.array(Z_1)
-Z_2 = [float(i) for i in Z_2]
-Z_2 = np.array(Z_2)
-# Z_1 = (Z_1 ** 2).mean()
-# Z_2 = (Z_2 ** 2).mean()
-# Z = math.sqrt(((Z_1 - Z_2) ** 2).mean())
-Z = ((Z_1 - Z_2) ** 2)
-sum = X + Y + Z
-print(sum)
-# atom_no = len(X) + len(Y) + len(Z)
-rmsd = math.sqrt((sum.sum())/66)
-print(rmsd)
+print(temp_1)
+print(temp_2)
 
-# num = np.array([-2, 5, -8, 9, -4])
-# num = math.sqrt((num ** 2).mean())
-# print(num)
+atoms_1 = []
+atoms_2 = []
+
+for i in temp_1:
+    # print(i.get_full_id()[3][1])
+    print(list(i.get_atoms()))
+    atoms_1 = atoms_1 + list(i.get_atoms())
+
+for j in temp_2:
+    # print(i.get_full_id()[3][1])
+    print(list(j.get_atoms()))    
+    atoms_2 = atoms_2 + list(j.get_atoms())
+
+print(len(atoms_1))
+print(len(atoms_2))
+
+fixed = atoms_1
+moving = atoms_2
+# moving = list(atoms)[0:21]
+# print(atoms_1)
+
+sup = Bio.PDB.Superimposer()
+sup.set_atoms(fixed, moving)
+print(sup.rms)
+sup.apply(moving)
+print(sup.rms)
