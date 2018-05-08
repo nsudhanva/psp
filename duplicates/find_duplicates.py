@@ -13,7 +13,7 @@ test_df = pd.DataFrame()
 
 for i in range(len(file_names)):
     for j in range(i, len(file_names)):
-        print(file_names[i], file_names[j])
+        # print(file_names[i], file_names[j])
         pd_xlsx_1 = pd.ExcelFile(file_names[i] + '.xlsx')
         pd_xlsx_2 = pd.ExcelFile(file_names[j] + '.xlsx')
 
