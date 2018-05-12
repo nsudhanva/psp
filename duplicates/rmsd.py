@@ -1,11 +1,11 @@
 import Bio.PDB
-from Bio.PDB.PDBParser import PDBParser
+from Bio.PDB import *
 import pandas as pd
 import numpy as np
 import warnings
 
 original_fragment = pd.read_excel('fragment3.xlsx')
-fragment = original_fragment
+fragment = original_fragment.head(11)
 writer = pd.ExcelWriter('fragment3_rms.xlsx', engine='xlsxwriter')
 rmsds = []
 
@@ -37,15 +37,15 @@ for index, row in fragment.iterrows():
     chain_1 = structure_1[0][chain_name_1]
     chain_2 = structure_2[0][chain_name_2]
 
-    # print("Chains 1" + str(list(chain_1)))
-    # print("Chains 2" + str(list(chain_2)))
-    # print(list(chain_1))
-    # for chain in chains:
-    #     print(len(list(chain.get_atoms())))
-    #     # print(list(chain.get_atoms()))
+    print("Chains 1" + str(list(chain_1)))
+    print("Chains 2" + str(list(chain_2)))
+    print(list(chain_1))
+    for chain in chains:
+        print(len(list(chain.get_atoms())))
+        # print(list(chain.get_atoms()))
 
-    # atoms_1 = structure_1.get_atoms()
-    # atoms_2 = structure_2.get_atoms()
+    atoms_1 = structure_1.get_atoms()
+    atoms_2 = structure_2.get_atoms()
 
     residues_1 = list(chain_1)
     residues_2 = list(chain_2)
@@ -53,8 +53,8 @@ for index, row in fragment.iterrows():
     temp_1 = residues_1[start_1:end_1]
     temp_2 = residues_2[start_2:end_2]
 
-    # print(temp_1)
-    # print(temp_2)
+    print(temp_1)
+    print(temp_2)
 
     atoms_1 = []
     atoms_2 = []
@@ -69,14 +69,14 @@ for index, row in fragment.iterrows():
         # print(list(j.get_atoms()))    
         atoms_2 = atoms_2 + list(j.get_atoms())
 
-    # print("Start 1:  " + str(start_1), "End 1: " + str(end_1))
-    # print("Start 2:  " + str(start_2), "End 2: " + str(end_2))
+    print("Start 1:  " + str(start_1), "End 1: " + str(end_1))
+    print("Start 2:  " + str(start_2), "End 2: " + str(end_2))
     
-    # print("Atoms 1: " + str(len(atoms_1)))
-    # print("Atoms 1: " + str(list(atoms_1)))
+    print("Atoms 1: " + str(len(atoms_1)))
+    print("Atoms 1: " + str(list(atoms_1)))
 
-    # print("Atoms 2: " + str(len(atoms_2)))
-    # print("Atoms 2: " + str(list(atoms_2)))
+    print("Atoms 2: " + str(len(atoms_2)))
+    print("Atoms 2: " + str(list(atoms_2)))
 
     fixed = atoms_1
     moving = atoms_2
