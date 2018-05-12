@@ -39,10 +39,6 @@ for index, row in fragment.iterrows():
 
     print("Chains 1" + str(list(chain_1)))
     print("Chains 2" + str(list(chain_2)))
-    print(list(chain_1))
-    for chain in chains:
-        print(len(list(chain.get_atoms())))
-        # print(list(chain.get_atoms()))
 
     atoms_1 = structure_1.get_atoms()
     atoms_2 = structure_2.get_atoms()
