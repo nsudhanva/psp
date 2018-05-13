@@ -1,8 +1,0 @@
-atom_siteCategory {}
-        atom_site {'id': '1'}
-                B_iso_or_equiv {} 123.26
-                Cartn_x {} -0.996
-                Cartn_y {} -148.742
-                Cartn_z {} -79.235
-
-{'atom_siteCategory': {'atom_site': {'B_iso_or_equiv': '123.26'}}}
