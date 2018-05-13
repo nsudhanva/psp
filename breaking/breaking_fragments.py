@@ -380,5 +380,5 @@ for file_name in file_names:
         # break
     broken_files.append(file_name)
 
-with open('broken.txt', 'w') as broken_file:
-    broken_file.write(broken_files)
+    with open('broken.txt', 'w') as broken_file:
+        broken_file.write(str(broken_files))
