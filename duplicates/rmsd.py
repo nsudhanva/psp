@@ -7,7 +7,7 @@ warnings.filterwarnings("ignore")
 
 original_fragment = pd.read_excel('fragment3.xlsx')
 
-original_fragment = original_fragment.iloc[[350]]
+# original_fragment = original_fragment.iloc[[350]]
 # original_fragment = original_fragment.head(6)
 writer = pd.ExcelWriter('fragment3_rms.xlsx', engine='xlsxwriter')
 rmsds = []
@@ -33,8 +33,8 @@ for index, row in original_fragment.iterrows():
     chain_1 = structure_1[0][chain_name_1]
     chain_2 = structure_2[0][chain_name_2]
 
-    print("Chains 1" + str(list(chain_1)))
-    print("Chains 2" + str(list(chain_2)))
+    # print("Chains 1" + str(list(chain_1)))
+    # print("Chains 2" + str(list(chain_2)))
 
     residues_1 = list(chain_1)
     residues_2 = list(chain_2)
@@ -68,8 +68,8 @@ for index, row in original_fragment.iterrows():
     temp_1 = residues_1[start_1:end_1]
     temp_2 = residues_2[start_2:end_2]
 
-    print(temp_1)
-    print(temp_2)
+    # print(temp_1)
+    # print(temp_2)
 
     atoms_1 = []
     atoms_2 = []
@@ -84,14 +84,14 @@ for index, row in original_fragment.iterrows():
         # print(list(j.get_atoms()))    
         atoms_2 = atoms_2 + list(j.get_atoms())
 
-    print("Start 1:  " + str(start_1), "End 1: " + str(end_1))
-    print("Start 2:  " + str(start_2), "End 2: " + str(end_2))
+    # print("Start 1:  " + str(start_1), "End 1: " + str(end_1))
+    # print("Start 2:  " + str(start_2), "End 2: " + str(end_2))
     
-    print("Atoms 1: " + str(len(atoms_1)))
-    print("Atoms 1: " + str(list(atoms_1)))
+    # print("Atoms 1: " + str(len(atoms_1)))
+    # print("Atoms 1: " + str(list(atoms_1)))
 
-    print("Atoms 2: " + str(len(atoms_2)))
-    print("Atoms 2: " + str(list(atoms_2)))
+    # print("Atoms 2: " + str(len(atoms_2)))
+    # print("Atoms 2: " + str(list(atoms_2)))
 
     fixed = atoms_1
     moving = atoms_2
@@ -109,7 +109,7 @@ for index, row in original_fragment.iterrows():
 
 #    break
 
-print(rmsds)
+# print(rmsds)
 original_fragment['RMSD'] = pd.Series(rmsds)
 # print(fragment.columns)
 original_fragment.to_excel(writer, 'Sheet1')
