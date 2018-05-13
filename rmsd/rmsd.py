@@ -14,7 +14,7 @@ PDB_DIR = os.path.abspath(PARENT_DIR + '\\' + 'download_pdb')
 
 for frag in range(3, 42):
     original_fragment = pd.read_excel(DUPLICATE_DIR + '\\' + 'fragment' + str(frag) + '.xlsx')
-
+    print("Fragment: ", frag)
     # original_fragment = original_fragment.iloc[[350]]
     # original_fragment = original_fragment.head(6)
     writer = pd.ExcelWriter('fragment' + str(frag) + '_rms.xlsx', engine='xlsxwriter')
