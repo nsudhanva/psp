@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 #file_names = ['102l_A', '1hq3_A', '1hq3_B', '1hq3_C', '1hq3_D', '1hq3_E', '1hq3_F', '1hq3_G', '1hq3_H']
-file_names = ['102l_A', '103m_A', '104l_A', '2gfs_A']
+file_names = ['102l_A', '103m_A', '104l_A', '104l_B', '2gfs_A']
 fragment_writer = pd.ExcelWriter('fragment3.xlsx')
 
 duplicates = []
