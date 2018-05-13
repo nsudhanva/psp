@@ -16,10 +16,22 @@ XML_DIR = os.path.abspath(PARENT_DIR + '\\' + 'download_xml')
 with open('temp_id_list.txt', 'r') as id_file:
     file_handle = id_file.read()
 
+with open('broken.txt', 'r') as broken_file:
+    broken_handle = broken_file.read()
+
+try:
+    broken_files = ast.literal_eval(broken_handle)
+except Exception as e:
+    broken_files = []
+
 file_names = ast.literal_eval(file_handle)
-    
+file_names = list(set(file_names) - set(broken_files))
+
 for file_name in file_names:
-    tree = ET.parse(XML_DIR + '\\' + file_name + '.xml')
+    try:
+        tree = ET.parse(XML_DIR + '\\' + file_name + '.xml')
+    except Exception as e:
+        tree = ""
 
     # Root contains parsed, encoded XML 
     root = tree.getroot()
@@ -77,8 +89,13 @@ for file_name in file_names:
 
     # Original DataFrame
     df = pd.DataFrame(df_dict['atom_siteCategory']).transpose()
+
     # Resolution
-    resolution = elemDict['ls_d_res_high']
+    try:
+        resolution = elemDict['ls_d_res_high']
+    except Exception as e:
+        resolution = 0
+        pass
 
     df.index.name = 'ids'
     df.index = df.index.map(int)
@@ -361,3 +378,7 @@ for file_name in file_names:
         writer[main_index].save()
         main_index = main_index + 1
         # break
+    broken_files.append(file_name)
+
+with open('broken.txt', 'w') as broken_file:
+    broken_file.write(broken_files)
