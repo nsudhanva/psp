@@ -7,7 +7,7 @@ warnings.filterwarnings("ignore")
 
 original_fragment = pd.read_excel('fragment3.xlsx')
 
-original_fragment = original_fragment.iloc[[50]]
+original_fragment = original_fragment.iloc[[350]]
 # original_fragment = original_fragment.head(6)
 writer = pd.ExcelWriter('fragment3_rms.xlsx', engine='xlsxwriter')
 rmsds = []
@@ -45,6 +45,9 @@ for index, row in original_fragment.iterrows():
     if list(residues_1[0].get_id())[1] == 0:
         start_1 = start_1 + 1
         end_1 = end_1 + 1
+    elif list(residues_1[0].get_id())[1] > 1:
+        start_1 = start_1 - list(residues_1[0].get_id())[1] + 1
+        end_1 = end_1 - list(residues_1[0].get_id())[1] + 1
     else:
         start_1 = start_1 + list(residues_1[0].get_id())[1] - 1
         end_1 = end_1 + list(residues_1[0].get_id())[1] - 1
@@ -52,6 +55,9 @@ for index, row in original_fragment.iterrows():
     if list(residues_2[0].get_id())[1] == 0:
         start_2 = start_2 + 1
         end_2 = end_2 + 1
+    elif list(residues_2[0].get_id())[1] > 1:
+        start_2 = start_2 - list(residues_2[0].get_id())[1] + 1
+        end_2 = end_2 - list(residues_2[0].get_id())[1] + 1
     else:
         start_2 = start_2 + list(residues_2[0].get_id())[1] - 1
         end_2 = end_2 + list(residues_2[0].get_id())[1] - 1
