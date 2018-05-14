@@ -1,12 +1,26 @@
-# import Bio.PDB
-# from Bio.PDB.PDBParser import PDBParser
+import ast
 
-# file_name = '1hq3'
+# with open('id_list.txt', 'r') as id_file:
+#     handle = id_file.read()
 
-# parser = PDBParser()
-# # try:
-# structure = parser.get_structure("test", file_name + '.pdb')
-# atoms = structure.get_atoms()
-# chains = structure.get_chains()
-# print(list(atoms))
-# print(list(chains))
+handle = "['1hq3', 'abcd', '104l']"
+
+id_list = ast.literal_eval(handle)
+pdb_error_list = []
+
+for file_name in id_list:
+    with open(file_name + '.pdb', 'r') as pdb_file:
+        pdb = pdb_file.read()
+    
+    pdb = pdb.split()
+
+     # print(pdb[-1:])
+    if len(pdb) > 0:
+        if pdb[-1:][0] != 'END':
+            pdb_error_list.append(file_name)
+        else:
+            # print(file_name)
+            pass
+            
+with open('invalid_pdbs.txt', 'w') as invalid_handle:
+    invalid_handle.write(str(pdb_error_list))
