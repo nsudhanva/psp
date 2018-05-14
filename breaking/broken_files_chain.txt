@@ -1,1 +1,1 @@
-['100d_A', '102l_A', '103m_A', '104l_A', '104l_B', '1hq3_A', '1hq3_B', '1hq3_C', '1hq3_D', '1hq3_E', '1hq3_F', '1hq3_G', '1hq3_H', '2gfs_A', '3k3j_A', '4mbs_A', '4mbs_B', '4zpy_A']
+['100d_A', '102l_A', '103m_A', '104l_A', '104l_B', '1hq3_A', '1hq3_B', '1hq3_C', '1hq3_D', '1hq3_E', '1hq3_F', '1hq3_G', '1hq3_H', '2gfs_A', '3k3j_A', '4zpy_A']
