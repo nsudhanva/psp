@@ -1,31 +1,25 @@
 # Author: (c) Sudhanva Naryana
 
 import ast
-import xml.etree.ElementTree as ET
-tree = ET.parse('getCurrent.xml')
-root = tree.getroot()
+import pandas as pd
 
-ids = []
+id_list = []
 url_list = []
+df = pd.DataFrame()
 
-# Get list of all files at RCSB
-for child in root:
-    ids.append(child.attrib['structureId'])
-    url_list.append('https://files.rcsb.org/download/' + child.attrib['structureId'])
-
-print(len(ids))
-
-
-
-with open('protein_id_list.txt', 'r') as id_file:
+with open('id_list.txt', 'r') as id_file:
     handle = id_file.read()
 
-id_lists = ast.literal_eval(str(handle))
-print(len(id_lists))
+id_list = ast.literal_eval(handle)
+# print(len(id_list))
 
-# with open('id_list.txt', 'a') as id_file:
-#     id_file.write(str(ids))
+for id in id_list:
+    url_list.append('https://files.rcsb.org/download/' + str(id))
 
-# # Write all files to txt
-# with open('url_list.txt', 'a') as url_file:
-#     url_file.write(str(url_list))
+# Write all files to txt
+with open('url_list.txt', 'a') as url_file:
+    url_file.write(str(url_list))
+
+df['ID'] = pd.Series(id_list)
+df['URLS'] = pd.Series(url_list)
+df.to_csv('ids.csv')
