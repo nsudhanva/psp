@@ -18,7 +18,7 @@ try:
 except Exception as e:
     file_names = []
 
-for frag in range(3, 42):
+for frag in range(1, 42):
     fragment_writer = pd.ExcelWriter('fragment' + str(frag) + '.xlsx')
     print("Fragment: ", frag)
     duplicates = []
@@ -28,6 +28,7 @@ for frag in range(3, 42):
     for i in range(len(file_names)):
         for j in range(i, len(file_names)):
             # print(file_names[i], file_names[j])
+
             pd_xlsx_1 = pd.ExcelFile(BROKEN_DIR + '\\' + file_names[i] + '.xlsx')
             pd_xlsx_2 = pd.ExcelFile(BROKEN_DIR + '\\' + file_names[j] + '.xlsx')
 
@@ -37,8 +38,14 @@ for frag in range(3, 42):
             pd_df_1['ID'] = pd_df_1['Metadata'][0] 
             pd_df_2['ID'] = pd_df_2['Metadata'][0] 
 
-            pd_df_1['Resolution'] = float(pd_df_1['Metadata'][1])
-            pd_df_2['Resolution'] = float(pd_df_2['Metadata'][1])
+            try:
+                pd_df_1['Resolution'] = float(pd_df_1['Metadata'][1])
+                pd_df_2['Resolution'] = float(pd_df_2['Metadata'][1])
+            except Exception as e:
+                pd_df_1['Resolution'] = float(0)
+                pd_df_2['Resolution'] = float(0)
+                # print(e)
+                pass
 
             for seq1 in range(len(pd_df_1['Fragments'])):
                 for seq2 in range(seq1 + 1 if file_names[i] == file_names[j] else 0, len(pd_df_2['Fragments'])):
