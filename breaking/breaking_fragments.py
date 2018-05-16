@@ -156,8 +156,9 @@ for file_name in file_names:
         chain_index = 0
 
         for i in auth_seq_list[:-1]:
-            if int(auth_seq_list[chain_index]) > int(auth_seq_list[chain_index + 1]):
+            if int(auth_seq_list[chain_index]) > int(auth_seq_list[chain_index + 1]) and abs(int(auth_seq_list[chain_index]) - int(auth_seq_list[chain_index + 1]) < 700):
                 chain_occurances.append(chain_index)
+                # print(int(auth_seq_list[chain_index]), int(auth_seq_list[chain_index + 1]))
                 # print(chain_index)
             else:
                 chain_occurances_start.append(chain_index)
