@@ -1,9 +1,20 @@
 import xml.etree.ElementTree as ET
+import ast
+import os
 
-file_name = '1hq3'
+with open('id_list.txt', 'r') as id_file:
+    handle = id_file.read()
 
-try:
-    tree = ET.parse(file_name + '.xml')
-except ET.ParseError:
-     with open('xml_errors.txt', 'a') as error_file:
-            error_file.write(str(file_name + '.xml') + "\n")
+id_list = ast.literal_eval(handle)
+xml_error_list = []
+
+for file_name in id_list:
+    try:
+        tree = ET.parse(file_name + '.xml')
+    except ET.ParseError:
+        os.remove(file_name + '.xml')
+        xml_error_list.append(file_name)
+        print(file_name)
+
+with open('xml_errors.txt', 'a') as error_file:
+    error_file.write(str(xml_error_list) + "\n")
