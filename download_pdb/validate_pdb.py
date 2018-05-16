@@ -1,9 +1,10 @@
 import ast
+import os
 
-# with open('id_list.txt', 'r') as id_file:
-#     handle = id_file.read()
+with open('id_list.txt', 'r') as id_file:
+    handle = id_file.read()
 
-handle = "['1hq3', 'abcd', '104l']"
+# handle = "['1hq3', 'abcd', '104l']"
 
 id_list = ast.literal_eval(handle)
 pdb_error_list = []
@@ -21,6 +22,9 @@ for file_name in id_list:
         else:
             # print(file_name)
             pass
-            
+
 with open('invalid_pdbs.txt', 'w') as invalid_handle:
     invalid_handle.write(str(pdb_error_list))
+
+for i in pdb_error_list:
+    os.remove(i)
