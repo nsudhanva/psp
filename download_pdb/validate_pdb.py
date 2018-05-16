@@ -11,21 +11,25 @@ pdb_error_list = []
 
 count = 0
 for file_name in id_list:
-    with open(file_name + '.pdb', 'r') as pdb_file:
-        pdb = pdb_file.read()
-    
-    pdb = pdb.split()
+    try:
+        with open(file_name + '.pdb', 'r') as pdb_file:
+            pdb = pdb_file.read()
+          
+        pdb = pdb.split()
 
-     # print(pdb[-1:])
-    if len(pdb) > 0:
-        if pdb[-1:][0] != 'END':
-            pdb_error_list.append(file_name)
-            os.remove(file_name + '.pdb')
-            print(str(count) + " ", end="")
-        else:
-            pass
-    count = count + 1
+        # print(pdb[-1:])
+        if len(pdb) > 0:
+            if pdb[-1:][0] != 'END':
+                pdb_error_list.append(file_name)
+                os.remove(file_name + '.pdb')
+                # print(str(count) + " ", end="")
+            else:
+                pass
+        count = count + 1
 
+    except Exception as e:
+        pass
+  
 with open('invalid_pdbs.txt', 'w') as invalid_handle:
     invalid_handle.write(str(pdb_error_list))
     

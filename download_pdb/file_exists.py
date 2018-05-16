@@ -1,3 +1,3 @@
-import os.path
+import os
 
-print(os.path.isfile('1hq3.pdb'))
+print(len(os.listdir()))

@@ -11,10 +11,13 @@ xml_error_list = []
 for file_name in id_list:
     try:
         tree = ET.parse(file_name + '.xml')
-    except ET.ParseError:
-        os.remove(file_name + '.xml')
-        xml_error_list.append(file_name)
-        print(file_name)
+    except Exception:
+        try:
+            os.remove(file_name + '.xml')
+            xml_error_list.append(file_name)
+        except Exception as e:
+            # print(file_name)
+            pass
 
 with open('xml_errors.txt', 'a') as error_file:
     error_file.write(str(xml_error_list) + "\n")
